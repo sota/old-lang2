@@ -1,0 +1,27 @@
+#!/bin/bash
+
+SPACES=" |'"
+SRCDIR="src"
+BINDIR="build/bin"
+LIBDIR="build/lib"
+PROGRAM="$BINDIR/sota"
+COMMANDLINE=()
+for arg in "$@"; do
+    case $arg in
+        --pdb)
+        PROGRAM="python -m pdb $SRCDIR/targetsota.py"
+        ;;
+        --py)
+        PROGRAM="python $SRCDIR/targetsota.py"
+        ;;
+        *)
+        if [[ $arg =~ $SPACES ]]; then
+            arg="'$arg'"
+        fi
+        COMMANDLINE+=("${arg}")
+        ;;
+    esac
+done
+
+eval LD_LIBRARY_PATH="$LIBDIR:$LD_LIBRARY_PATH" ${PROGRAM} "$COMMANDLINE"
+exit $?
