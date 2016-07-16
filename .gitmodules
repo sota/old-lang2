@@ -1,4 +1,4 @@
 [submodule "src/pypy"]
-	path = src/pypy
-	url = ssh://git@github.com/sota/pypy
+    path = src/pypy
+    url = https://github.com/sota/pypy
     branch = master
