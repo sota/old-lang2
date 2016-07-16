@@ -1,4 +1,4 @@
-.PHONY: clean all sota submods
+.PHONY: clean all sota submods test
 
 PYTHON := $(shell which python)
 RPYTHON = src/pypy/rpython/bin/rpython
@@ -20,6 +20,9 @@ submods:
 $(BINDIR)/sota: submods
 	mkdir -p $(BINDIR) $(LIBDIR)
 	$(PYTHON) -B $(RPYTHON) --output $(BINDIR)/sota $(SRCDIR)/$(TARGET)
+
+test:
+	exit 0
 
 clean:
 	rm -rf $(BUILDDIR)
