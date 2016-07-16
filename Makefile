@@ -1,5 +1,9 @@
-.PHONY: clean all sota submods test
+.PHONY: all submods pylint preflight sota test pristine
 
+RMRF = $(shell which rmrf)
+ifeq ($(RMRF),)
+    RMRF = rm -rf
+endif
 PYTHON := $(shell which python)
 RPYTHON = src/pypy/rpython/bin/rpython
 BUILDDIR = build
@@ -8,21 +12,41 @@ BINDIR = $(BUILDDIR)/bin
 LIBDIR = $(BUILDDIR)/lib
 TARGET = targetsota.py
 VERSION=\"$(shell git describe)\"
+GSM = git submodule
+
+PYLINT = pylint
+PYLINTFLAGS = -E -j4 --rcfile .pylint.rc
+PYFILES := $(wildcard src/*.py)
 
 all: sota
 
-sota: $(BINDIR)/sota
-
 submods:
-	git submodule init
-	git submodule status | awk '{print $$2}' | xargs -P5 -n1 git submodule update
+	$(GSM)  init
+	$(GSM) status | awk '{print $$2}' | xargs -P5 -n1 $(GSM) update
 
-$(BINDIR)/sota: submods
-	mkdir -p $(BINDIR) $(LIBDIR)
-	$(PYTHON) -B $(RPYTHON) --output $(BINDIR)/sota $(SRCDIR)/$(TARGET)
+pylint: $(patsubst %.py,%.pylint,$(PYFILES))
 
-test:
+%.pylint:
+	$(PYLINT) $(PYLINTFLAGS) $*.py
+
+preflight: pylint
+	exit 0
+
+sota: preflight submods $(BINDIR)/sota
+
+test: sota
 	exit 0
 
 clean:
-	rm -rf $(BUILDDIR)
+	@echo rmrf $(RMRF)
+	$(RMRF) $(BUILDDIR)/
+
+pristine:
+	$(GSM) deinit --all
+	git clean -xfd
+	git reset --hard HEAD
+
+$(BINDIR)/sota:
+	mkdir -p $(BINDIR) $(LIBDIR)
+	$(PYTHON) -B $(RPYTHON) --output $(BINDIR)/sota $(SRCDIR)/$(TARGET)
+
