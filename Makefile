@@ -1,4 +1,4 @@
-.PHONY: all submods pylint preflight sota test pristine
+.PHONY: all init submods pylint preflight sota test pristine
 
 RMRF = $(shell which rmrf)
 ifeq ($(RMRF),)
@@ -18,11 +18,21 @@ PYLINT = pylint
 PYLINTFLAGS = -E -j4 --rcfile .pylint.rc
 PYFILES := $(wildcard src/*.py)
 
+SUBMODS := $(shell $(GSM) status | awk '{print $$2}')
+
 all: sota
 
-submods:
-	$(GSM)  init
-	$(GSM) status | awk '{print $$2}' | xargs -P5 -n1 $(GSM) update
+#submods:
+#	$(GSM)  init
+#	$(GSM) status | awk '{print $$2}' | xargs -P5 -n1 $(GSM) update
+
+init:
+	$(GSM) init
+
+submods: init $(patsubst %, %.submod,$(SUBMODS))
+
+%.submod:
+	$(GSM) update $*
 
 pylint: $(patsubst %.py,%.pylint,$(PYFILES))
 
