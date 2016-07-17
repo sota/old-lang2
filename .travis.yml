@@ -20,6 +20,7 @@ before_install:
     fi
   - $CC --version
   - $CXX --version
+  - make --version
 install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
