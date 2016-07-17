@@ -1,9 +1,6 @@
 .PHONY: all init submods pylint preflight sota test pristine
 
-RMRF = $(shell which rmrf)
-ifeq ($(RMRF),)
-    RMRF = rm -rf
-endif
+RMRF = rm -rf
 PYTHON := $(shell which python)
 RPYTHON = src/pypy/rpython/bin/rpython
 BUILDDIR = build
