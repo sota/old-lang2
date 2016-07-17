@@ -22,41 +22,41 @@ SUBMODS := $(shell $(GSM) status | awk '{print $$2}')
 
 all: sota
 
-#submods:
-#	$(GSM)  init
-#	$(GSM) status | awk '{print $$2}' | xargs -P5 -n1 $(GSM) update
-
 init:
 	$(GSM) init
 
 submods: init $(patsubst %, %.submod,$(SUBMODS))
 
-%.submod:
-	$(GSM) update $*
-
 pylint: $(patsubst %.py,%.pylint,$(PYFILES))
-
-%.pylint:
-	$(PYLINT) $(PYLINTFLAGS) $*.py
+	@echo pylint complete
 
 preflight: pylint
-	exit 0
+	@echo prelight complete
 
 sota: preflight submods $(BINDIR)/sota
+	@echo sota built
 
 test: sota
-	exit 0
+	@echo [test]
 
 clean:
-	@echo rmrf $(RMRF)
+	@echo [clean]
 	$(RMRF) $(BUILDDIR)/
 
 pristine:
+	@echo [pristine]
 	$(GSM) deinit --all
 	git clean -xfd
 	git reset --hard HEAD
 
+%.submod:
+	$(GSM) update $*
+
+%.pylint:
+	$(PYLINT) $(PYLINTFLAGS) $*.py
+
 $(BINDIR)/sota:
+	@echo [sota]
 	mkdir -p $(BINDIR) $(LIBDIR)
 	$(PYTHON) -B $(RPYTHON) --output $(BINDIR)/sota $(SRCDIR)/$(TARGET)
 
