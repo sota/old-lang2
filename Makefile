@@ -86,7 +86,7 @@ src/version.py:
 %.pylint:
 	$(PYLINT) $(PYLINTFLAGS) $*.py
 
-$(LIBDIR)/libcli.so:
+$(LIBDIR)/libcli.so: src/version.h
 	@echo [libcli]
 	cd src/cli && make
 
