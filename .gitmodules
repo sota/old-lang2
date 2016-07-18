@@ -1,13 +1,16 @@
 [submodule "src/pypy"]
-    path = src/pypy
-    url = https://github.com/sota/pypy
-    branch = master
+	path = src/pypy
+	url = https://github.com/sota/pypy
+	path = master
 [submodule "src/colm"]
 	path = src/colm
 	url = https://github.com/colmnet/colm
+	path = master
 [submodule "src/ragel"]
 	path = src/ragel
 	url = https://github.com/colmnet/ragel
+	path = master
 [submodule "src/docopt"]
 	path = src/docopt
 	url = https://github.com/docopt/docopt.cpp
+	path = master
