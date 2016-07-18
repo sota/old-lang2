@@ -87,3 +87,15 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+src/version.h
+src/version.py
+src/lexer/lexer.cpp
+
+**/test
+tests/**
+
+bin/
+include/
+root/
+share/
