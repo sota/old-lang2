@@ -2,7 +2,12 @@
     path = src/pypy
     url = https://github.com/sota/pypy
     branch = master
-[submodule "src/rply"]
-	path = src/rply
-	url = https://github.com/alex/rply
-    branch = master
+[submodule "src/colm"]
+	path = src/colm
+	url = https://github.com/colmnet/colm
+[submodule "src/ragel"]
+	path = src/ragel
+	url = https://github.com/colmnet/ragel
+[submodule "src/docopt"]
+	path = src/docopt
+	url = https://github.com/docopt/docopt.cpp
