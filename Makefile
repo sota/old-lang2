@@ -89,6 +89,7 @@ src/version.py:
 $(LIBDIR)/libcli.so: src/version.h
 	@echo [libcli]
 	cd src/cli && make
+	install -C -D src/cli/libcli.so $(LIBDIR)/libcli.so
 
 $(REPO)/bin/colm:
 	@echo [colm]

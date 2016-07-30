@@ -16,10 +16,10 @@ os.environ['PYTHONPATH'] = 'src:src/pypy'
 from rpython.rtyper.lltypesystem import rffi
 from rpython.translator.tool.cbuild import ExternalCompilationInfo
 
-from sast.lexer import Lexer
-from sast.parser import Parser
+#from sota.lexer import Lexer
+#from sota.parser import Parser
 
-lib_dir = os.path.join(os.getcwd(), 'root/lib')
+lib_dir = os.path.join(os.getcwd(), 'build/lib')
 cli_dir = os.path.join(os.getcwd(), 'src/cli')
 cli_eci = ExternalCompilationInfo(
     include_dirs=[cli_dir],
@@ -65,13 +65,15 @@ def entry_point(argv):
     if result:
         print 'clean unsuccessful'
 
-    lexer = Lexer()
-    parser = Parser(lexer)
+    #lexer = Lexer()
+    #parser = Parser(lexer)
 
     if '<source>' in args:
-        exitcode = parser.Parse(args['<source>'])
+        pass
+        #exitcode = parser.Parse(args['<source>'])
     else:
-        exitcode = parser.Repl()
+        pass
+        #exitcode = parser.Repl()
 
     return exitcode
 
