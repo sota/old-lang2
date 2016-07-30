@@ -70,7 +70,7 @@ clean:
 
 pristine:
 	@echo [pristine]
-	$(GSM) deinit --all
+	$(GSM) deinit .
 	git clean -xfd
 	git reset --hard HEAD
 
