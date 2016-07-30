@@ -101,6 +101,7 @@ $(REPO)/bin/ragel: $(REPO)/bin/colm
 	@echo [ragel]
 	cd src/ragel && ./autogen.sh
 	cd src/ragel && ./configure --prefix=$(REPO) --with-colm=$(REPO)  --disable-manual
+	(cd src/ragel/src && make parse.c)
 	cd src/ragel make && make install
 
 $(LIBDIR)/liblexer.so: $(REPO)/bin/ragel
