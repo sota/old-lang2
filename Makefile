@@ -108,7 +108,7 @@ $(LIBDIR)/liblexer.so: $(REPO)/bin/ragel
 	cd src/lexer && LD_LIBRARY_PATH=$(REPO)/lib make RAGEL=$(REPO)/bin/ragel
 	install -C -D src/lexer/liblexer.so $(LIBDIR)/liblexer.so
 
-$(BINDIR)/sota:
+$(BINDIR)/sota: $(LIBDIR)/libcli.so $(LIBDIR)/liblexer.so
 	@echo [sota]
 	mkdir -p $(BINDIR) $(LIBDIR)
 	$(PYTHON) -B $(RPYTHON) --output $(BINDIR)/sota $(SRCDIR)/$(TARGET)
