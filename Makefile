@@ -1,7 +1,7 @@
 .PHONY: all version init submods pylint preflight sota test pristine
 
-REPO := $(shell git rev-parse --show-toplevel)
 RMRF = rm -rf
+REPO := $(shell git rev-parse --show-toplevel)
 PYTHON := $(shell which python)
 RPYTHON = src/pypy/rpython/bin/rpython
 BUILDDIR = $(REPO)/build
@@ -10,13 +10,10 @@ BINDIR = $(BUILDDIR)/bin
 LIBDIR = $(BUILDDIR)/lib
 TARGET = targetsota.py
 GSM = git submodule
-
 PYLINT = pylint
 PYLINTFLAGS = -E -j4 --rcfile .pylint.rc
-PYFILES := $(wildcard src/*.py)
-
-SOTA_VERSION=$(shell git describe)
-
+PYFILES	:= $(wildcard src/*.py)
+SOTA_VERSION := $(shell git describe)
 
 export LD_LIBRARY_PATH=$(BUILDDIR)/lib/
 
@@ -109,7 +106,7 @@ $(BUILDDIR)/bin/ragel: $(BUILDDIR)/bin/colm
 
 $(LIBDIR)/liblexer.so: $(BUILDDIR)/bin/ragel
 	@echo [liblexer]
-	cd src/lexer && LD_LIBRARY_PATH=$(BUILDDIR)/lib make RAGEL=$(BUILDDIR)/bin/ragel
+	cd src/lexer && make RAGEL=$(BUILDDIR)/bin/ragel
 	install -C -D src/lexer/liblexer.so $(LIBDIR)/liblexer.so
 
 $(BINDIR)/sota: $(LIBDIR)/libcli.so $(LIBDIR)/liblexer.so
