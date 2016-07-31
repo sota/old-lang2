@@ -4,7 +4,7 @@ REPO := $(shell git rev-parse --show-toplevel)
 RMRF = rm -rf
 PYTHON := $(shell which python)
 RPYTHON = src/pypy/rpython/bin/rpython
-BUILDDIR = build
+BUILDDIR = $(REPO)/build
 SRCDIR = src
 BINDIR = $(BUILDDIR)/bin
 LIBDIR = $(BUILDDIR)/lib
@@ -16,6 +16,9 @@ PYLINTFLAGS = -E -j4 --rcfile .pylint.rc
 PYFILES := $(wildcard src/*.py)
 
 SOTA_VERSION=$(shell git describe)
+
+
+export LD_LIBRARY_PATH=$(BUILDDIR)/lib/
 
 define VERSIONH
 #ifndef __SOTA_VERSION__
@@ -52,9 +55,9 @@ preflight: pylint
 
 libcli: $(LIBDIR)/libcli.so
 
-colm: $(REPO)/bin/colm
+colm: $(BUILDDIR)/bin/colm
 
-ragel: $(REPO)/bin/ragel
+ragel: $(BUILDDIR)/bin/ragel
 
 liblexer: $(LIBDIR)/liblexer.so
 
@@ -91,22 +94,22 @@ $(LIBDIR)/libcli.so: src/version.h
 	cd src/cli && make
 	install -C -D src/cli/libcli.so $(LIBDIR)/libcli.so
 
-$(REPO)/bin/colm:
+$(BUILDDIR)/bin/colm:
 	@echo [colm]
 	cd src/colm && ./autogen.sh
-	cd src/colm && ./configure --prefix=$(REPO)
+	cd src/colm && ./configure --prefix=$(BUILDDIR)
 	cd src/colm make && make install
 
-$(REPO)/bin/ragel: $(REPO)/bin/colm
+$(BUILDDIR)/bin/ragel: $(BUILDDIR)/bin/colm
 	@echo [ragel]
 	cd src/ragel && ./autogen.sh
-	cd src/ragel && ./configure --prefix=$(REPO) --with-colm=$(REPO)  --disable-manual
+	cd src/ragel && ./configure --prefix=$(BUILDDIR) --with-colm=$(BUILDDIR)  --disable-manual
 	(cd src/ragel/src && make parse.c)
-	cd src/ragel make && make install
+	cd src/ragel && make && make install
 
-$(LIBDIR)/liblexer.so: $(REPO)/bin/ragel
+$(LIBDIR)/liblexer.so: $(BUILDDIR)/bin/ragel
 	@echo [liblexer]
-	cd src/lexer && LD_LIBRARY_PATH=$(REPO)/lib make RAGEL=$(REPO)/bin/ragel
+	cd src/lexer && LD_LIBRARY_PATH=$(BUILDDIR)/lib make RAGEL=$(BUILDDIR)/bin/ragel
 	install -C -D src/lexer/liblexer.so $(LIBDIR)/liblexer.so
 
 $(BINDIR)/sota: $(LIBDIR)/libcli.so $(LIBDIR)/liblexer.so
