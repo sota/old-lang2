@@ -6,3 +6,9 @@
     path = src/docopt
     url = https://github.com/docopt/docopt.cpp
     branch = master
+[submodule "src/colm"]
+	path = src/colm
+	url = https://github.com/sota/colm
+[submodule "src/ragel"]
+	path = src/ragel
+	url = https://github.com/sota/ragel
