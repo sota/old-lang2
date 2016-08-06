@@ -93,13 +93,13 @@ $(LIBDIR)/libcli.so: src/version.h
 
 $(BUILDDIR)/bin/colm:
 	@echo [colm]
-	cd src/colm && ./autogen.sh
+	cd src/colm && autoreconf -f -i
 	cd src/colm && ./configure --prefix=$(BUILDDIR)
 	cd src/colm make && make install
 
 $(BUILDDIR)/bin/ragel: $(BUILDDIR)/bin/colm
 	@echo [ragel]
-	cd src/ragel && ./autogen.sh
+	cd src/ragel && autoreconf -f -i
 	cd src/ragel && ./configure --prefix=$(BUILDDIR) --with-colm=$(BUILDDIR)  --disable-manual
 	(cd src/ragel/src && make parse.c)
 	cd src/ragel && make && make install
